@@ -3,14 +3,15 @@ class DTO:
         self,
         name: str = None,
         specialty_code: str = None,
-        passing_score_paid: int = None,
         passing_score_budget: int = None,
+        passing_score_paid: int = None,
         faculty: str = None,
-        plan_paid: int = None,
         plan_budget: int = None,
+        plan_paid: int = None,
         study_form: str = None,
         is_shortened: bool = None,
-        contest: float = None
+        contest: str = None,
+        qualification: str = None
     ):
         self.name = name
         self.specialty_code = specialty_code
@@ -22,3 +23,4 @@ class DTO:
         self.study_form = study_form
         self.is_shortened = is_shortened
         self.contest = contest
+        self.qualification = qualification

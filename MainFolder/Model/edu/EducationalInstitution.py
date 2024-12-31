@@ -9,7 +9,7 @@ class EducationalInstitution(ABC):
         self.name = name
         self.specialities = []
 
-    def add_speciality(self, speciality:Speciality,dto:DTO):
+    def add_speciality(self, speciality: Speciality,dto:DTO):
         speciality.name = dto.name
         speciality.specialty_code = dto.specialty_code
         speciality.passing_score_paid = dto.passing_score_paid
@@ -20,7 +20,9 @@ class EducationalInstitution(ABC):
         speciality.study_form = dto.study_form
         speciality.is_shortened = dto.is_shortened
         speciality.contest = dto.contest
+        speciality.qualification = dto.qualification
         self.specialities.append(speciality)
+
 
     @abstractmethod
     def to_dict(self):

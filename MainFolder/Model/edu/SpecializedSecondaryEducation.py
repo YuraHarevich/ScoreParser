@@ -5,7 +5,7 @@ from MainFolder.config import DEFAULT_TECHNICHIAL_EDUCATIONAL_LEVEL, DEFAULT_MID
     DEFAULT_OTHER_STUDY_DURATION, NINE_AFTER_GRADE
 
 
-class ProfessionalTechnicalEducation(EducationalInstitution):
+class SpecializedSecondaryEducation(EducationalInstitution):
     def __init__(self, name: str):
         super().__init__(name)
 
