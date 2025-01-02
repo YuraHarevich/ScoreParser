@@ -1,4 +1,5 @@
 import re
+import time
 
 from MainFolder.Model.DTO.DTO import DTO
 from MainFolder.Model.DTO.ParentDTOModule import ParentDTOModule
@@ -80,7 +81,9 @@ class P9_bntu(ParentDTOModule):
     def merge_lists(self,
                    paid_list:list[DTO],
                    budget_list:list[DTO]) -> list[DTO]:
-        result_list = budget_list
+        result_list = list()
+        is_added = False
+        temp = paid_list[0]
         for paid_element in paid_list:
             for budget_element in budget_list:
                 if paid_element.name.replace(" ","") == budget_element.name.replace(" ","") and \
@@ -88,11 +91,21 @@ class P9_bntu(ParentDTOModule):
                         paid_element.faculty == budget_element.faculty and \
                         paid_element.study_form == budget_element.study_form and \
                         paid_element.is_shortened == budget_element.is_shortened:
-                    result_list.append(budget_element)
                     result_element = budget_element
                     result_element.plan_paid = paid_element.plan_paid
                     result_element.passing_score_paid = paid_element.passing_score_paid
-                    result_element.contest = budget_element.contest+"/"+paid_element.contest
-                else:
+                    if budget_element.contest == None:
+                        budget_element.contest=" "
+                    if paid_element.contest == None:
+                        paid_element.contest=" "
+                    result_element.contest = budget_element.contest + "/" + paid_element.contest
+                    result_list.append(result_element)
+                    break
+                elif budget_list[-1] == budget_element:
                     result_list.append(paid_element)
+
+        for budget_element in budget_list:
+            # Проверяем, есть ли элемент с таким же именем в result_list
+            if not any(result_element.name.replace(" ","") == budget_element.name.replace(" ","") for result_element in result_list):
+                result_list.append(budget_element)  # Добавляем, если имени нет в result_list
         return result_list

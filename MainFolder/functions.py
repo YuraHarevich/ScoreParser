@@ -65,9 +65,13 @@ def bntu_request()->HigherEducationInstitution:
     rows6 = get_rows(str6)
 
     parser = P9_bntu()
+    first = parser.return_dto(rows1, 1)[:2]
+    second = parser.return_dto(rows3, 3)[6:12]
+
 
     for dto in parser.merge_lists(parser.return_dto(rows1, 1),parser.return_dto(rows3, 3)):
         h.add_speciality(Speciality(), dto)
+    print("Ну хоть что-то")
     for dto in parser.merge_lists(parser.return_dto(rows2, 2),parser.return_dto(rows4, 4)):
         h.add_speciality(Speciality(), dto)
     for dto in parser.return_dto(rows5, 5):

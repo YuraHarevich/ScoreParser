@@ -4,6 +4,7 @@ from MainFolder.Model.DTO.ParentDTOModule import ParentDTOModule
 
 class P4_arhemchik(ParentDTOModule):
     def return_dto(self,rows:list[list],url_number = None) -> list[DTO]:
+        dto = list()
         for row in rows:
             print(row)
             dto.append(DTO(
