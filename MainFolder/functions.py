@@ -1,3 +1,6 @@
+import re
+
+import pdfplumber
 import requests
 from bs4 import BeautifulSoup
 
@@ -6,6 +9,7 @@ from MainFolder.Model.DTO.HTML.P9_bntu import P9_bntu
 from MainFolder.Model.Speciality import Speciality
 from MainFolder.Model.edu.HigherEducationInstitution import HigherEducationInstitution
 from MainFolder.config import *
+import fitz
 
 
 def find_beetween_brakets(target_string: str):
@@ -79,3 +83,35 @@ def bntu_request()->HigherEducationInstitution:
     for dto in parser.return_dto(rows6, 6):
         h.add_speciality(Speciality(), dto)
     return h
+
+# Функция для исправления разрывов между словами (например, "Менеджме нт" на "Менеджмент")
+def fix_word_breaks(line):
+    # Исправляем разрывы между частями слова (например, "Менеджме нт" на "Менеджмент")
+    fixed_line = re.sub(r'([а-яА-Я]+)\s+(й|ий|ес)\b', r'\1\2', line)
+
+    # Убираем лишние пробелы
+    fixed_line = re.sub(r'\s+', ' ', fixed_line).strip()
+
+    return fixed_line
+
+def extract_pdf(pdf_path) -> list[list]:
+    with pdfplumber.open(pdf_path) as pdf:
+        all_data = []
+        table = list()
+        for page in pdf.pages:
+            # Извлекаем таблицу с текущей страницы
+            for element in page.extract_table():
+                table.append(element)
+        return table
+
+def extract_pdf_with_fitz(pdf_path) -> list[list]:
+    all_data = []
+    doc = fitz.open(pdf_path)
+
+    for page in doc:
+        # Извлекаем текст строки с координатами
+        blocks = page.get_text("blocks")
+        for block in blocks:
+            lines = block[4].split("\n")  # Разделение на строки
+            all_data.extend([line.split() for line in lines])  # Разделяем строки на ячейки
+    return all_data
